@@ -1,14 +1,15 @@
 package com.plo.ploworks;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,23 +34,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-public class EkspresiFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
-
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private boolean flag_loading;
-    private EkspresiListAdapter adapter;
+public class EkspresiFragment extends Fragment{
+    private ProgressDialog progress;
     private List<Ekspresi> ekspresiList = new ArrayList<>();
-
-    private int PAGE_LOADED = 1;
+    private EkspresiListAdapter adapter;
+    private Boolean flag_loading = false;
+    private String auth;
+    private int offset = 0;
     private final static String TOTAL_POSTS = "10";
     private final static String SORT_TYPE = "DESC";
-    private String auth;
+    private int PAGE_LOADED = 1;
 
     public static EkspresiFragment newInstance(int page) {
         EkspresiFragment fragment = new EkspresiFragment();
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,64 +58,95 @@ public class EkspresiFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         //set root view with fragment
         View rootView = inflater.inflate(R.layout.fragment_list,container,false);
+        ListView listEkspresi = (ListView) rootView.findViewById(R.id.list_view);
 
-        if(savedInstanceState == null) {
-            //get initialize url
-            String URL = this.urlBuilder();
+        //read from sharedPreferences
+        SharedPreferences prefs = this.getActivity().getSharedPreferences(Constants.USER_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        auth = prefs.getString("authorization", "");
 
-            //read from sharedPreferences
-            SharedPreferences prefs = this.getActivity().getSharedPreferences(Constants.USER_PREFERENCES_NAME, Context.MODE_PRIVATE);
-            auth = prefs.getString("authorization", "");
-            Log.d("Auth",auth);
+        this.progressDialogStart();
+        //get initialize url
+        String URL = this.urlBuilder();
 
-            //request for first fragment generated
-            RequestQueue timelineQueue = Volley.newRequestQueue(getActivity());
-            CreateRequest jsonTimeLine = new CreateRequest(Request.Method.GET, URL, onSuccessListener(),
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getActivity(), "Network Timeout", Toast.LENGTH_LONG).show();
-                            flag_loading = false;
-                        }
-                    }){
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError{
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("authorization", auth);
-                    return params;
+        //request for first fragment generated
+        RequestQueue timelineQueue = Volley.newRequestQueue(getActivity());
+        CreateRequest jsonTimeLine = new CreateRequest(Request.Method.GET, URL, onSuccessListener(),
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), "Network Timeout", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        //request add for first time
+        timelineQueue.add(jsonTimeLine);
+        listEkspresi.setOnScrollListener(new AbsListView.OnScrollListener() {
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0) {
+                    if (flag_loading == false) {
+                        progressDialogStart();
+                        flag_loading = true;
+                        addItem();
+                        progress.dismiss();
+                    }
                 }
-            };
+            }
+        });
+        //load the list adapter
+        adapter = new EkspresiListAdapter(getActivity(), ekspresiList);
+        listEkspresi.setAdapter(adapter);
 
-            //request add for first time
-            timelineQueue.add(jsonTimeLine);
-            ListView listEkspresi = (ListView) rootView.findViewById(R.id.list_view);
-
-            swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
-            swipeRefreshLayout.setOnRefreshListener(this);
-            swipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeRefreshLayout.setRefreshing(true);
-                    addItem();
-                }
-            });
-
-            adapter = new EkspresiListAdapter(getActivity(), ekspresiList);
-            listEkspresi.setAdapter(adapter);
-        }
+        progress.dismiss();
         return rootView;
     }
 
-    @Override
-    public void onRefresh(){
-        addItem();
+    private String urlBuilder(){
+        //Build URL to request
+        String timelineURL = "ekspresi/timeline.json";
+        final RequestBuilder.UrlBuilder url = new RequestBuilder.UrlBuilder();
+        url.setUrl(timelineURL);
+        url.appendUrlQuery("apikey", Constants.API_KEY);
+        url.appendUrlQuery("sort", SORT_TYPE);
+        url.appendUrlQuery("jumlah", TOTAL_POSTS);
+        url.appendUrlQuery("page", Integer.toString(PAGE_LOADED));
+
+        String buildURL = url.build();
+
+        return buildURL;
     }
 
-    //Volley ekspresi on success listener
-    private Response.Listener<JSONObject> onSuccessListener(){
-        return new Response.Listener<JSONObject>(){
+    private void addItem(){
+        flag_loading = false;
+        String URL = this.urlBuilder();
+        //request for first fragment generated
+        RequestQueue timelineQueue = Volley.newRequestQueue(getActivity());
+        CreateRequest jsonTimeLine = new CreateRequest(Request.Method.GET, URL, onSuccessListener(),
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), "Network Timeout", Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("authorization", auth);
+                return params;
+            }
+        };
+        //request add for first time
+        timelineQueue.add(jsonTimeLine);
+    }
+
+    //Volley ekspresi on success listener refresh
+    private Response.Listener<JSONObject> onSuccessListener() {
+        return new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -123,7 +154,7 @@ public class EkspresiFragment extends Fragment implements SwipeRefreshLayout.OnR
                     PAGE_LOADED = PAGE_LOADED + 1;
 
                     JSONArray jarray = response.getJSONArray("timeline");
-                    for (int i = 0; i < jarray.length(); i++){
+                    for (int i = 0; i < jarray.length(); i++) {
                         try {
                             JSONObject obj = jarray.getJSONObject(i);
                             Ekspresi e = new Ekspresi();
@@ -134,76 +165,30 @@ public class EkspresiFragment extends Fragment implements SwipeRefreshLayout.OnR
                             e.setNama(obj.getString("nama"));
                             e.setGambar(obj.getString("gambar"));
                             e.setJumlah(obj.getString("jumlah"));
-                            ekspresiList.add(e);
 
-                        }catch (JSONException e){
+                            offset = Integer.parseInt(ekspresiList.get(ekspresiList.lastIndexOf(ekspresiList)).getNo());
+                            if(ekspresiList.isEmpty()){
+                                ekspresiList.add(e);
+                            }else if (Integer.parseInt(e.getNo()) < offset){
+                                ekspresiList.add(e);
+                            }
+                            Log.d("Response",response.toString());
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-
-                    //dismiss progressDialog
-                    flag_loading = false;
-
                     adapter.notifyDataSetChanged();
-                    swipeRefreshLayout.setRefreshing(false);
-                    Log.d("Response", "Response = " + jarray.toString());
-                }catch(Exception e){
+                } catch (Exception e) {
                     Toast.makeText(getActivity(), "No Data Received", Toast.LENGTH_LONG).show();
-
-                    flag_loading = false;
-                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
         };
     }
 
-    private String urlBuilder(){
-        //Build URL to request
-        String timelineURL = "ekspresi/timeline.json";
-        final RequestBuilder.UrlBuilder url = new RequestBuilder.UrlBuilder();
-        url.setUrl(timelineURL);
-        url.appendUrlQuery("apikey", Constants.API_KEY);
-        url.appendUrlQuery("sort", SORT_TYPE);
-        url.appendUrlQuery("jumlah",TOTAL_POSTS);
-        url.appendUrlQuery("page",Integer.toString(PAGE_LOADED));
-
-        String buildURL = url.build();
-
-        return buildURL;
+    private void progressDialogStart(){
+        progress = new ProgressDialog(getActivity());
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.show();
     }
-
-    private void addItem(){
-        // showing refresh animation before making http call
-        swipeRefreshLayout.setRefreshing(true);
-
-
-        String URL = this.urlBuilder();
-
-        //request for first fragment generated
-        RequestQueue timelineQueue = Volley.newRequestQueue(getActivity());
-        CreateRequest jsonTimeLine = new CreateRequest(Request.Method.GET, URL,onSuccessListener(),
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), "Network Timeout", Toast.LENGTH_LONG).show();
-
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError{
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("authorization", auth);
-                return params;
-            }
-        };
-
-
-        //request add for first time
-        timelineQueue.add(jsonTimeLine);
-
-
-    }
-
-
 }

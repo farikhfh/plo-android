@@ -1,11 +1,8 @@
 package com.plo.ploworks;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,25 +27,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-
-public class CurgasFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private boolean flag_loading;
-    private CurgasListAdapter adapter;
+public class CurgasFragment extends Fragment{
+    private ProgressDialog progress;
     private List<Curgas> curgasList = new ArrayList<>();
-
-    private int PAGE_LOADED = 1;
+    private CurgasListAdapter adapter;
+    private Boolean flag_loading = false;
+    private int offset = 0;
     private final static String TOTAL_POSTS = "10";
     private final static String SORT_TYPE = "DESC";
+    private int PAGE_LOADED = 1;
 
     public static CurgasFragment newInstance(int page) {
         CurgasFragment fragment = new CurgasFragment();
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +52,12 @@ public class CurgasFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         //set root view with fragment
         View rootView = inflater.inflate(R.layout.fragment_list,container,false);
+        ListView listCurgas = (ListView) rootView.findViewById(R.id.list_view);
 
-        if(savedInstanceState == null) {
+            this.progressDialogStart();
             //get initialize url
             String URL = this.urlBuilder();
 
@@ -71,82 +68,32 @@ public class CurgasFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Toast.makeText(getActivity(), "Network Timeout", Toast.LENGTH_LONG).show();
-                            flag_loading = false;
                         }
                     });
 
-
             //request add for first time
             timelineQueue.add(jsonTimeLine);
+        listCurgas.setOnScrollListener(new AbsListView.OnScrollListener() {
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
 
-            ListView listCurgas = (ListView) rootView.findViewById(R.id.list_view);
-
-            //top swiping to get new item
-            swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
-            swipeRefreshLayout.setOnRefreshListener(this);
-            swipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeRefreshLayout.setRefreshing(true);
-                    addItem();
-                }
-            });
-
-            //load the list adapter
-            adapter = new CurgasListAdapter(getActivity(), curgasList);
-            listCurgas.setAdapter(adapter);
-        }
-        return rootView;
-    }
-
-    @Override
-    public void onRefresh(){
-        addItem();
-    }
-
-    //Volley curgas on success listener
-    private Response.Listener<JSONObject> onSuccessListener(){
-        return new Response.Listener<JSONObject>(){
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    //define page to next page for api
-                    PAGE_LOADED = PAGE_LOADED + 1;
-
-                    JSONArray jarray = response.getJSONArray("timeline");
-                    for (int i = 0; i < jarray.length(); i++){
-                        try {
-                            JSONObject obj = jarray.getJSONObject(i);
-                            Curgas curgas = new Curgas();
-                            curgas.setNo(obj.getString("no"));
-                            curgas.setKode(obj.getString("kode"));
-                            curgas.setUrl_pp(obj.getString("url_pp"));
-                            curgas.setNama(obj.getString("nama"));
-                            curgas.setWaktu(obj.getString("waktu"));
-                            curgas.setJudul(obj.getString("judul"));
-                            curgas.setIsiSingkat(obj.getString("isi_singkat"));
-                            curgas.setGambar(obj.getString("gambar"));
-                            curgas.setJumlahKomentar(obj.getString("jumlah_komentar"));
-                            curgasList.add(curgas);
-
-                        }catch (JSONException e){
-                            e.printStackTrace();
-                        }
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0) {
+                    if (flag_loading == false) {
+                        progressDialogStart();
+                        flag_loading = true;
+                        addItem();
+                        progress.dismiss();
                     }
-
-                    flag_loading = false;
-
-                    adapter.notifyDataSetChanged();
-                    swipeRefreshLayout.setRefreshing(false);
-                    Log.d("Response", "Response = " + jarray.toString());
-                }catch(Exception e){
-                    Toast.makeText(getActivity(), "No Data Received", Toast.LENGTH_LONG).show();
-
-                    flag_loading = false;
-                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
-        };
+        });
+        //load the list adapter
+        adapter = new CurgasListAdapter(getActivity(), curgasList);
+        listCurgas.setAdapter(adapter);
+
+        progress.dismiss();
+        return rootView;
     }
 
     private String urlBuilder(){
@@ -165,10 +112,8 @@ public class CurgasFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     private void addItem(){
-        // showing refresh animation before making http call
-        swipeRefreshLayout.setRefreshing(true);
+        flag_loading = false;
         String URL = this.urlBuilder();
-
         //request for first fragment generated
         RequestQueue timelineQueue = Volley.newRequestQueue(getActivity());
         CreateRequest jsonTimeLine = new CreateRequest(Request.Method.GET, URL, onSuccessListener(),
@@ -176,16 +121,60 @@ public class CurgasFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getActivity(), "Network Timeout", Toast.LENGTH_LONG).show();
-                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
-
-
         //request add for first time
         timelineQueue.add(jsonTimeLine);
-
-
     }
 
+    //Volley curgas on success listener refresh
+    private Response.Listener<JSONObject> onSuccessListener() {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    //define page to next page for api
+                    PAGE_LOADED = PAGE_LOADED + 1;
 
+                    JSONArray jarray = response.getJSONArray("timeline");
+                    for (int i = 0; i < jarray.length(); i++) {
+                        try {
+                            JSONObject obj = jarray.getJSONObject(i);
+                            Curgas curgas = new Curgas();
+                            curgas.setNo(obj.getString("no"));
+                            curgas.setKode(obj.getString("kode"));
+                            curgas.setUrl_pp(obj.getString("url_pp"));
+                            curgas.setNama(obj.getString("nama"));
+                            curgas.setWaktu(obj.getString("waktu"));
+                            curgas.setJudul(obj.getString("judul"));
+                            curgas.setIsiSingkat(obj.getString("isi_singkat"));
+                            curgas.setGambar(obj.getString("gambar"));
+                            curgas.setJumlahKomentar(obj.getString("jumlah_komentar"));
+                            curgasList.add(curgas);
+
+                            offset = Integer.parseInt(curgasList.get(curgasList.lastIndexOf(curgasList)).getNo());
+                            if(curgasList.isEmpty()){
+                                curgasList.add(curgas);
+                            }else if (Integer.parseInt(curgas.getNo()) < offset){
+                                curgasList.add(curgas);
+                            }
+                            Log.d("Response", response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), "No Data Received", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+    }
+
+    private void progressDialogStart(){
+        progress = new ProgressDialog(getActivity());
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.show();
+    }
 }

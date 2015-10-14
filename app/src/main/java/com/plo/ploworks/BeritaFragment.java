@@ -33,7 +33,8 @@ public class BeritaFragment extends Fragment{
     private ProgressDialog progress;
     private List<Berita> beritaList = new ArrayList<>();
     private BeritaListAdapter adapter;
-    private Boolean flag_loading;
+    private Boolean flag_loading = false;
+    private int offset = 0;
     private final static String TOTAL_POSTS = "10";
     private final static String SORT_TYPE = "DESC";
     private int PAGE_LOADED = 1;
@@ -56,7 +57,6 @@ public class BeritaFragment extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_list,container,false);
         ListView listBerita = (ListView) rootView.findViewById(R.id.list_view);
 
-        if(beritaList.isEmpty()) {
             this.progressDialogStart();
             //get initialize url
             String URL = this.urlBuilder();
@@ -70,23 +70,27 @@ public class BeritaFragment extends Fragment{
                             Toast.makeText(getActivity(), "Network Timeout", Toast.LENGTH_LONG).show();
                         }
                     });
-            //load the list adapter
-            adapter = new BeritaListAdapter(getActivity(), beritaList);
-            listBerita.setAdapter(adapter);
             //request add for first time
             timelineQueue.add(jsonTimeLine);
-        }
         listBerita.setOnScrollListener(new AbsListView.OnScrollListener() {
-            public void onScrollStateChanged(AbsListView view, int scrollState) {}
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0) {
                     if (flag_loading == false) {
+                        progressDialogStart();
                         flag_loading = true;
                         addItem();
+                        progress.dismiss();
                     }
                 }
             }
         });
+        //load the list adapter
+        adapter = new BeritaListAdapter(getActivity(), beritaList);
+        listBerita.setAdapter(adapter);
+
         progress.dismiss();
         return rootView;
     }
@@ -107,6 +111,7 @@ public class BeritaFragment extends Fragment{
     }
 
     private void addItem(){
+        flag_loading = false;
         String URL = this.urlBuilder();
         //request for first fragment generated
         RequestQueue timelineQueue = Volley.newRequestQueue(getActivity());
@@ -147,15 +152,19 @@ public class BeritaFragment extends Fragment{
                             berita.setJumlahKomentar(obj.getString("jumlah_komentar"));
                             berita.setKomentarTerakhir(obj.getString("komentar_terakhir"));
 
+//                            offset = Integer.parseInt(beritaList.get(beritaList.lastIndexOf(beritaList)).getIdPost());
+//                            if(beritaList.isEmpty()){
+//                                beritaList.add(berita);
+//                            }else if (Integer.parseInt(berita.getIdPost()) < offset){
+//                                beritaList.add(berita);
+//                            }
                             beritaList.add(berita);
-
+                            Log.d("Response", response.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-
                     adapter.notifyDataSetChanged();
-                    Log.d("Response", "Response = " + jarray.toString());
                 } catch (Exception e) {
                     Toast.makeText(getActivity(), "No Data Received", Toast.LENGTH_LONG).show();
                 }
