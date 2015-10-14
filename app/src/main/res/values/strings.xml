@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">plo</string>
+
+    <string name="SPLASH_SCREEN_TEXT">PLO Kontak UGM</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">Main Menu</string>
+
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
