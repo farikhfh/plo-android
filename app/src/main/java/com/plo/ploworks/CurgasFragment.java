@@ -113,6 +113,10 @@ public class CurgasFragment extends Fragment{
 
     private void addItem(){
         flag_loading = false;
+
+        //define page to next page for request
+        PAGE_LOADED = PAGE_LOADED + 1;
+
         String URL = this.urlBuilder();
         //request for first fragment generated
         RequestQueue timelineQueue = Volley.newRequestQueue(getActivity());
@@ -133,8 +137,7 @@ public class CurgasFragment extends Fragment{
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    //define page to next page for api
-                    PAGE_LOADED = PAGE_LOADED + 1;
+
 
                     JSONArray jarray = response.getJSONArray("timeline");
                     for (int i = 0; i < jarray.length(); i++) {
@@ -152,13 +155,7 @@ public class CurgasFragment extends Fragment{
                             curgas.setJumlahKomentar(obj.getString("jumlah_komentar"));
                             curgasList.add(curgas);
 
-                            offset = Integer.parseInt(curgasList.get(curgasList.lastIndexOf(curgasList)).getNo());
-                            if(curgasList.isEmpty()){
-                                curgasList.add(curgas);
-                            }else if (Integer.parseInt(curgas.getNo()) < offset){
-                                curgasList.add(curgas);
-                            }
-                            Log.d("Response", response.toString());
+                            Log.d("Response", "Curgas = "+curgas.getNo());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

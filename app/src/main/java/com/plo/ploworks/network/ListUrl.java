@@ -5,9 +5,4 @@ package com.plo.ploworks.network;
  */
 public interface ListUrl {
     String BASE_URL = "http://kontak.ugm.ac.id/api";
-
-    String NEWS = "news";
-    String EKSPRESI = "ekspresi";
-    String GROUP = "group";
-    String USER = "user";
 }

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.RequestQueue;
@@ -62,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         password = editTextPassword.getText().toString().trim();
 
         //adding POST parameter to request
-        Map<String,String> param = new HashMap<String,String>();
+        final Map<String,String> param = new HashMap<String,String>();
         param.put("username",username);
         param.put("password",password);
         param.put("mode","1");
@@ -76,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("URL", "Url = " + url.toString());
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        CreateRequest jsonObjectReq = new CreateRequest(Method.POST , URL,
+        CreateRequest jsonObjectReq = new CreateRequest(Method.POST, URL,
                 new Response.Listener<JSONObject>(){
                     @Override
                     public void onResponse(JSONObject response){
@@ -124,6 +125,11 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Network Timeout", Toast.LENGTH_LONG).show();
                     }
                 }){
+                @Override
+                protected Map<String, String> getParams()
+                        throws AuthFailureError {
+                    return param;
+                }
                 @Override
                 public String getBodyContentType() {
                     return "application/x-www-form-urlencoded; charset=UTF-8";

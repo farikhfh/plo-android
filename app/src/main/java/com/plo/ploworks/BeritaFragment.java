@@ -1,13 +1,16 @@
 package com.plo.ploworks;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.plo.ploworks.berita.Berita;
 import com.plo.ploworks.berita.BeritaListAdapter;
+import com.plo.ploworks.berita.DetailBeritaActivity;
 import com.plo.ploworks.network.Constants;
 import com.plo.ploworks.network.CreateRequest;
 import com.plo.ploworks.network.RequestBuilder;
@@ -29,12 +33,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BeritaFragment extends Fragment{
+public class BeritaFragment extends Fragment {
     private ProgressDialog progress;
     private List<Berita> beritaList = new ArrayList<>();
     private BeritaListAdapter adapter;
+    private RequestQueue timelineQueue;
     private Boolean flag_loading = false;
-    private int offset = 0;
     private final static String TOTAL_POSTS = "10";
     private final static String SORT_TYPE = "DESC";
     private int PAGE_LOADED = 1;
@@ -54,24 +58,27 @@ public class BeritaFragment extends Fragment{
                              Bundle savedInstanceState) {
 
         //set root view with fragment
-        View rootView = inflater.inflate(R.layout.fragment_list,container,false);
+        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
         ListView listBerita = (ListView) rootView.findViewById(R.id.list_view);
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
-            this.progressDialogStart();
-            //get initialize url
-            String URL = this.urlBuilder();
+        this.progressDialogStart();
+        //get initialize url
+        String URL = this.urlBuilder();
 
-            //request for first fragment generated
-            RequestQueue timelineQueue = Volley.newRequestQueue(getActivity());
-            CreateRequest jsonTimeLine = new CreateRequest(Request.Method.GET, URL, onSuccessListener(),
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getActivity(), "Network Timeout", Toast.LENGTH_LONG).show();
-                        }
-                    });
-            //request add for first time
-            timelineQueue.add(jsonTimeLine);
+        //request for first fragment generated
+        timelineQueue = Volley.newRequestQueue(getActivity());
+        CreateRequest jsonTimeLine = new CreateRequest(Request.Method.GET, URL, onSuccessListener(),
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), "Network Timeout", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        //request add for first time
+        timelineQueue.add(jsonTimeLine);
+
         listBerita.setOnScrollListener(new AbsListView.OnScrollListener() {
             public void onScrollStateChanged(AbsListView view, int scrollState) {
             }
@@ -87,34 +94,44 @@ public class BeritaFragment extends Fragment{
                 }
             }
         });
+        listBerita.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Berita item = (Berita) parent.getItemAtPosition(position);
+                Bundle b = new Bundle();
+                b.putString("ID_POST", item.getKodeUser());
+                Intent intent = new Intent(getActivity(), DetailBeritaActivity.class);
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
         //load the list adapter
         adapter = new BeritaListAdapter(getActivity(), beritaList);
         listBerita.setAdapter(adapter);
-
         progress.dismiss();
         return rootView;
     }
 
-    private String urlBuilder(){
+    private String urlBuilder() {
         //Build URL to request
         String timelineURL = "news/timeline.json";
         final RequestBuilder.UrlBuilder url = new RequestBuilder.UrlBuilder();
         url.setUrl(timelineURL);
         url.appendUrlQuery("apikey", Constants.API_KEY);
         url.appendUrlQuery("sort", SORT_TYPE);
-        url.appendUrlQuery("jumlah",TOTAL_POSTS);
-        url.appendUrlQuery("page",Integer.toString(PAGE_LOADED));
+        url.appendUrlQuery("jumlah", TOTAL_POSTS);
+        url.appendUrlQuery("page", Integer.toString(PAGE_LOADED));
 
         String buildURL = url.build();
 
         return buildURL;
     }
 
-    private void addItem(){
+    private void addItem() {
         flag_loading = false;
+        PAGE_LOADED = PAGE_LOADED + 1;
         String URL = this.urlBuilder();
         //request for first fragment generated
-        RequestQueue timelineQueue = Volley.newRequestQueue(getActivity());
         CreateRequest jsonTimeLine = new CreateRequest(Request.Method.GET, URL, onSuccessListener(),
                 new Response.ErrorListener() {
                     @Override
@@ -132,9 +149,6 @@ public class BeritaFragment extends Fragment{
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    //define page to next page for api
-                    PAGE_LOADED = PAGE_LOADED + 1;
-
                     JSONArray jarray = response.getJSONArray("timeline");
                     for (int i = 0; i < jarray.length(); i++) {
                         try {
@@ -152,14 +166,8 @@ public class BeritaFragment extends Fragment{
                             berita.setJumlahKomentar(obj.getString("jumlah_komentar"));
                             berita.setKomentarTerakhir(obj.getString("komentar_terakhir"));
 
-//                            offset = Integer.parseInt(beritaList.get(beritaList.lastIndexOf(beritaList)).getIdPost());
-//                            if(beritaList.isEmpty()){
-//                                beritaList.add(berita);
-//                            }else if (Integer.parseInt(berita.getIdPost()) < offset){
-//                                beritaList.add(berita);
-//                            }
                             beritaList.add(berita);
-                            Log.d("Response", response.toString());
+                            Log.d("Response", "Berita = " + berita.getIdPost());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -172,10 +180,11 @@ public class BeritaFragment extends Fragment{
         };
     }
 
-    private void progressDialogStart(){
+    private void progressDialogStart() {
         progress = new ProgressDialog(getActivity());
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
         progress.show();
     }
+
 }

@@ -1,15 +1,20 @@
 package com.plo.ploworks.ekspresi;
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.plo.ploworks.R;
+import com.plo.ploworks.network.CreateImageRequest;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class EkspresiListAdapter extends BaseAdapter {
@@ -46,21 +51,44 @@ public class EkspresiListAdapter extends BaseAdapter {
         if (convertView == null)
             convertView = inflater.inflate(R.layout.list_ekspresi, null);
 
-        TextView textWaktu = (TextView)convertView.findViewById(R.id.textWaktu);
-        TextView textUsername = (TextView)convertView.findViewById(R.id.textUsername);
-        TextView textNama = (TextView)convertView.findViewById(R.id.textNama);
-        TextView textEkspresi = (TextView)convertView.findViewById(R.id.textEkspresi);
-        TextView textJumlah = (TextView)convertView.findViewById(R.id.textJumlah);
-        TextView textKomentar = (TextView)convertView.findViewById(R.id.textKomentar);
+        TextView textNama = (TextView) convertView.findViewById(R.id.textNamaEkspresi);
+        TextView textUsername = (TextView) convertView.findViewById(R.id.textUsernameEkspresi);
+        TextView textWaktu = (TextView) convertView.findViewById(R.id.textWaktuEkspresi);
+        TextView textEkspresi = (TextView) convertView.findViewById(R.id.textEkspresi);
+        TextView textKomentator = (TextView) convertView.findViewById(R.id.textKomentatorEkspresi);
+        TextView textKomentar = (TextView) convertView.findViewById(R.id.textKomentarEkspresi);
+
+        NetworkImageView mProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePictureEkspresi);
+        NetworkImageView mImageContent = (NetworkImageView) convertView.findViewById(R.id.imageIsiEkspresi);
 
         Ekspresi e = ekspresiItem.get(position);
-        textWaktu.setText(e.getWaktu());
-        textUsername.setText(e.getUsername());
         textNama.setText(e.getNama());
+        textUsername.setText(e.getUsername());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
+        Date date = new Date();
+        try {
+            date = dateFormat.parse(e.getWaktu());
+        } catch (ParseException pe){
+            pe.printStackTrace();
+        }
+        textWaktu.setText(date.toString());
+
         textEkspresi.setText(e.getEkspresi());
-        textJumlah.setText(e.getJumlah());
+        textKomentator.setText(e.getKomentator());
         textKomentar.setText(e.getKomentar());
 
+        //profile picture
+        ImageLoader mImageLoader = CreateImageRequest.getInstance(this.activity).getImageLoader();
+        mProfilePicture.setImageUrl(e.getUrl_pp(), mImageLoader);
+        mProfilePicture.setMaxWidth(100);
+        mProfilePicture.setMaxHeight(100);
+        mProfilePicture.setDefaultImageResId(R.drawable.def_image);
+
+        //Content image
+        if(e.getGambar() != "none"){
+            mImageContent.setImageUrl(e.getGambar(),mImageLoader);
+        }
         return convertView;
     }
 

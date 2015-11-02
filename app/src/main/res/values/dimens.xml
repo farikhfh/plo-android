@@ -3,4 +3,17 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Text dimension-->
+    <dimen name="text_username">10sp</dimen>
+    <dimen name="text_nama">18sp</dimen>
+    <dimen name="text_waktu">12sp</dimen>
+    <dimen name="text_isi_singkat">14sp</dimen>
+    <dimen name="text_terakhir_komentar">12sp</dimen>
+    <!-- Text dimension-->
+
+    <!-- Image dimension-->
+    <dimen name="profile_picture_height">40dp</dimen>
+    <dimen name="profile_picture_width">40dp</dimen>
+    <!-- Image dimension-->
 </resources>

@@ -9,8 +9,8 @@ import android.support.v4.app.FragmentPagerAdapter;
  * Created by Farikh Fadlul Huda on 10/9/2015.
  */
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
-    final int PAGE_COUNT = 4;
-    private String tabTitles[] = new String[] { "Berita", "Curgas", "Ekspresi","Pesan" };
+    final int PAGE_COUNT = 3;
+    private String tabTitles[] = new String[] { "Berita", "Curgas", "Ekspresi" };
     private Context context;
     private Fragment fragment;
 

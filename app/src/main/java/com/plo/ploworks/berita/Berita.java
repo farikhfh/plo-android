@@ -12,6 +12,7 @@ public class Berita {
     String jumlahKomentar;
     String komentarTerakhir;
     String waktu;
+    String isiLengkap;
 
     public String getWaktu() {
         return waktu;
@@ -99,5 +100,12 @@ public class Berita {
 
     public void setKomentarTerakhir(String komentarTerakhir) {
         this.komentarTerakhir = komentarTerakhir;
+    }
+    public String getIsiLengkap() {
+        return isiLengkap;
+    }
+
+    public void setIsiLengkap(String isiLengkap) {
+        this.isiLengkap = isiLengkap;
     }
 }

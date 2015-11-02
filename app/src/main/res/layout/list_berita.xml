@@ -1,29 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingLeft="1dp"
+    android:paddingTop="1dp"
+    android:paddingBottom="1dp">
 
-    <TextView
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:layout_width="@dimen/profile_picture_width"
+            android:layout_height="@dimen/profile_picture_height"
+            android:id="@+id/profilePictureBerita"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="4dp"
+            android:scaleType="fitCenter"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textNamaBerita"
+            android:text="Nama"
+            android:textSize="@dimen/text_nama"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_alignTop="@+id/profilePictureBerita"
+            android:layout_toRightOf="@+id/profilePictureBerita"
+            android:layout_toEndOf="@+id/profilePictureBerita"
+            android:layout_marginLeft="2dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textUsernameBerita"
+            android:text="(Username)"
+            android:enabled="false"
+            android:textSize="@dimen/text_username"
+            android:layout_gravity="center_vertical"
+            android:textStyle="italic"
+            android:layout_below="@+id/textNamaBerita"
+            android:layout_alignLeft="@+id/textNamaBerita"
+            android:layout_alignStart="@+id/textNamaBerita" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Waktu"
+            android:id="@+id/textWaktuBerita"
+            android:enabled="false"
+            android:textSize="@dimen/text_waktu"
+            android:layout_below="@+id/textUsernameBerita"
+            android:layout_alignLeft="@+id/textUsernameBerita"
+            android:layout_alignStart="@+id/textUsernameBerita" />
+    </RelativeLayout>
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textNama"/>
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textUsername"
-        />
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textWaktu"/>
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textJudul"/>
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textIsiSingkat"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Judul"
+            android:id="@+id/textJudulBerita"
+            android:textStyle="bold"
+            android:layout_marginLeft="4dp" />
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageIsiBerita"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="isi singkat"
+            android:id="@+id/textIsiSingkatBerita"
+            android:layout_marginLeft="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Terakhir dikomentari oleh "
+            android:textSize="@dimen/text_terakhir_komentar"
+            android:gravity="left"
+            android:textIsSelectable="false"
+            android:textStyle="italic"
+            android:enabled="false"
+            android:id="@+id/textTerakhirKomentarBerita"
+            android:layout_marginLeft="4dp" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

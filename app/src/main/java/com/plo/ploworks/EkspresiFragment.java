@@ -40,7 +40,6 @@ public class EkspresiFragment extends Fragment{
     private EkspresiListAdapter adapter;
     private Boolean flag_loading = false;
     private String auth;
-    private int offset = 0;
     private final static String TOTAL_POSTS = "10";
     private final static String SORT_TYPE = "DESC";
     private int PAGE_LOADED = 1;
@@ -66,6 +65,7 @@ public class EkspresiFragment extends Fragment{
         //read from sharedPreferences
         SharedPreferences prefs = this.getActivity().getSharedPreferences(Constants.USER_PREFERENCES_NAME, Context.MODE_PRIVATE);
         auth = prefs.getString("authorization", "");
+        Log.d("auth",auth.toString());
 
         this.progressDialogStart();
         //get initialize url
@@ -79,7 +79,14 @@ public class EkspresiFragment extends Fragment{
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getActivity(), "Network Timeout", Toast.LENGTH_LONG).show();
                     }
-                });
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("authorization",auth);
+                return headers;
+            }
+        };
 
         //request add for first time
         timelineQueue.add(jsonTimeLine);
@@ -123,6 +130,10 @@ public class EkspresiFragment extends Fragment{
 
     private void addItem(){
         flag_loading = false;
+
+        //define page to next page for api
+        PAGE_LOADED = PAGE_LOADED + 1;
+
         String URL = this.urlBuilder();
         //request for first fragment generated
         RequestQueue timelineQueue = Volley.newRequestQueue(getActivity());
@@ -135,9 +146,9 @@ public class EkspresiFragment extends Fragment{
                 }){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("authorization", auth);
-                return params;
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("authorization",auth);
+                return headers;
             }
         };
         //request add for first time
@@ -150,10 +161,7 @@ public class EkspresiFragment extends Fragment{
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    //define page to next page for api
-                    PAGE_LOADED = PAGE_LOADED + 1;
-
-                    JSONArray jarray = response.getJSONArray("timeline");
+                   JSONArray jarray = response.getJSONArray("timeline");
                     for (int i = 0; i < jarray.length(); i++) {
                         try {
                             JSONObject obj = jarray.getJSONObject(i);
@@ -165,14 +173,14 @@ public class EkspresiFragment extends Fragment{
                             e.setNama(obj.getString("nama"));
                             e.setGambar(obj.getString("gambar"));
                             e.setJumlah(obj.getString("jumlah"));
-
-                            offset = Integer.parseInt(ekspresiList.get(ekspresiList.lastIndexOf(ekspresiList)).getNo());
-                            if(ekspresiList.isEmpty()){
-                                ekspresiList.add(e);
-                            }else if (Integer.parseInt(e.getNo()) < offset){
-                                ekspresiList.add(e);
-                            }
-                            Log.d("Response",response.toString());
+                            ekspresiList.add(e);
+//                            offset = Integer.parseInt(ekspresiList.get(ekspresiList.lastIndexOf(ekspresiList)).getNo());
+//                            if(ekspresiList.isEmpty()){
+//                                ekspresiList.add(e);
+//                            }else if (Integer.parseInt(e.getNo()) < offset){
+//                                ekspresiList.add(e);
+//                            }
+                            Log.d("Response","Ekspresi = "+e.getNo());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
