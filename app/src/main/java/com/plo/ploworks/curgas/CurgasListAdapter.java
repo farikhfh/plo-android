@@ -70,10 +70,14 @@ public class CurgasListAdapter extends BaseAdapter {
 
         //profile picture
         mImageLoader = CreateImageRequest.getInstance(this.activity).getImageLoader();
-        mProfilePicture.setImageUrl(b.getUrl_pp(), mImageLoader);
-        mProfilePicture.setMaxWidth(100);
-        mProfilePicture.setMaxHeight(100);
+        //profile picture
         mProfilePicture.setDefaultImageResId(R.drawable.def_image);
+        mProfilePicture.setMaxHeight(100);
+        mProfilePicture.setMaxWidth(100);
+
+        if(b.getUrl_pp() != "none"){
+            mProfilePicture.setImageUrl(b.getUrl_pp(), mImageLoader);
+        }
 
         //name
         textNama.setText(b.getNama());

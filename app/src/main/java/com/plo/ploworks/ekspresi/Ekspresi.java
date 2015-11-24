@@ -35,7 +35,7 @@ public class Ekspresi {
         return nama;
     }
 
-    public void setNama(String naa) {
+    public void setNama(String nama) {
         this.nama = nama;
     }
 

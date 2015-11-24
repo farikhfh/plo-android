@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="1dp"
+    android:paddingTop="1dp"
+    android:paddingBottom="1dp">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="@dimen/profile_picture_width"
+            android:layout_height="@dimen/profile_picture_height"
+            android:id="@+id/profilePictureKomentar"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="14dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/def_image" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textNamaKomentar"
+            android:text="Nama"
+            android:textSize="@dimen/text_nama"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_alignTop="@+id/profilePictureKomentar"
+            android:layout_toRightOf="@+id/profilePictureKomentar"
+            android:layout_toEndOf="@+id/profilePictureKomentar"
+            android:layout_marginLeft="2dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textUsernameKomentar"
+            android:text="(Username)"
+            android:enabled="false"
+            android:textSize="@dimen/text_username"
+            android:layout_gravity="center_vertical"
+            android:textStyle="italic"
+            android:layout_below="@+id/textNamaKomentar"
+            android:layout_alignLeft="@+id/textNamaKomentar"
+            android:layout_alignStart="@+id/textNamaKomentar" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Waktu"
+            android:id="@+id/textWaktuKomentar"
+            android:enabled="false"
+            android:textSize="@dimen/text_waktu"
+            android:layout_below="@+id/textUsernameKomentar"
+            android:layout_alignLeft="@+id/textUsernameKomentar"
+            android:layout_alignStart="@+id/textUsernameKomentar" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageIsiKomentar"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="fitCenter"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="isi singkat"
+            android:id="@+id/textKomentar" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

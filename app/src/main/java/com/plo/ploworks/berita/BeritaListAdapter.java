@@ -68,12 +68,15 @@ public class BeritaListAdapter extends BaseAdapter {
 
         Berita b = beritaItem.get(position);
 
-        //profile picture
         mImageLoader = CreateImageRequest.getInstance(this.activity).getImageLoader();
-        mProfilePicture.setImageUrl(b.getUrlFotoUser(), mImageLoader);
-        mProfilePicture.setMaxWidth(100);
-        mProfilePicture.setMaxHeight(100);
+        //profile picture
         mProfilePicture.setDefaultImageResId(R.drawable.def_image);
+        mProfilePicture.setMaxHeight(100);
+        mProfilePicture.setMaxWidth(100);
+
+        if(b.getUrlFotoUser() != "none"){
+            mProfilePicture.setImageUrl(b.getUrlFotoUser(), mImageLoader);
+        }
 
         //name
         textNama.setText(b.getNama());
