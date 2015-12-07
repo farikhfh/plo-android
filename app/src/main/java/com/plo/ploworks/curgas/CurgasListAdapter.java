@@ -3,16 +3,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.Image;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.plo.ploworks.R;
 import com.plo.ploworks.network.CreateImageRequest;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,9 +26,8 @@ public class CurgasListAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
     private List<Curgas> curgasItem;
-    private NetworkImageView mProfilePicture;
-    private NetworkImageView mContentPicture;
-    private ImageLoader mImageLoader;
+    private ImageView mProfilePicture;
+    private ImageView mContentPicture;
 
     public CurgasListAdapter(Activity activity, List<Curgas> curgasItem) {
         this.activity = activity;
@@ -63,20 +65,18 @@ public class CurgasListAdapter extends BaseAdapter {
         TextView textIsiSingkat = (TextView)convertView.findViewById(R.id.textIsiSingkatCurgas);
         TextView textKomentarTerakhir = (TextView)convertView.findViewById(R.id.textTerakhirKomentarCurgas);
 
-        mProfilePicture = (NetworkImageView)convertView.findViewById(R.id.profilePictureCurgas);
-        mContentPicture = (NetworkImageView)convertView.findViewById(R.id.imageIsiCurgas);
+        mProfilePicture = (ImageView)convertView.findViewById(R.id.profilePictureCurgas);
+        mContentPicture = (ImageView)convertView.findViewById(R.id.imageIsiCurgas);
 
         Curgas b = curgasItem.get(position);
 
-        //profile picture
-        mImageLoader = CreateImageRequest.getInstance(this.activity).getImageLoader();
-        //profile picture
-        mProfilePicture.setDefaultImageResId(R.drawable.def_image);
-        mProfilePicture.setMaxHeight(100);
-        mProfilePicture.setMaxWidth(100);
-
         if(b.getUrl_pp() != "none"){
-            mProfilePicture.setImageUrl(b.getUrl_pp(), mImageLoader);
+            Picasso.with(convertView.getContext())
+                    .load(b.getUrl_pp())
+                    .placeholder(R.drawable.def_image)
+                    .resize(50,50)
+                    .centerCrop()
+                    .into(mProfilePicture);
         }
 
         //name
@@ -106,7 +106,16 @@ public class CurgasListAdapter extends BaseAdapter {
 
         //Content image
         if(b.getGambar() != "none"){
-            mContentPicture.setImageUrl(b.getGambar(),mImageLoader);
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int height = displaymetrics.heightPixels;
+            int width = displaymetrics.widthPixels;
+
+            Picasso.with(convertView.getContext())
+                    .load(b.getGambar())
+                    .resize(width,height)
+                    .centerInside()
+                    .into(mContentPicture);
         }
 
         return convertView;

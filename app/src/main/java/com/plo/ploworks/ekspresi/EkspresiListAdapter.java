@@ -1,16 +1,19 @@
 package com.plo.ploworks.ekspresi;
 import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.plo.ploworks.R;
 import com.plo.ploworks.network.CreateImageRequest;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,8 +61,8 @@ public class EkspresiListAdapter extends BaseAdapter {
         TextView textKomentator = (TextView) convertView.findViewById(R.id.textKomentatorEkspresi);
         TextView textKomentar = (TextView) convertView.findViewById(R.id.textKomentarEkspresi);
 
-        NetworkImageView mProfilePicture = (NetworkImageView) convertView.findViewById(R.id.profilePictureEkspresi);
-        NetworkImageView mImageContent = (NetworkImageView) convertView.findViewById(R.id.imageIsiEkspresi);
+        ImageView mProfilePicture = (ImageView) convertView.findViewById(R.id.profilePictureEkspresi);
+        ImageView mImageContent = (ImageView) convertView.findViewById(R.id.imageIsiEkspresi);
 
         Ekspresi e = ekspresiItem.get(position);
         textNama.setText(e.getNama());
@@ -78,16 +81,28 @@ public class EkspresiListAdapter extends BaseAdapter {
         textKomentator.setText(e.getKomentator());
         textKomentar.setText(e.getKomentar());
 
-        //profile picture
-        ImageLoader mImageLoader = CreateImageRequest.getInstance(this.activity).getImageLoader();
-        mProfilePicture.setImageUrl(e.getUrl_pp(), mImageLoader);
-        mProfilePicture.setMaxWidth(100);
-        mProfilePicture.setMaxHeight(100);
-        mProfilePicture.setDefaultImageResId(R.drawable.def_image);
+        if (e.getUrl_pp() == "none"){
+        } else {
+            Picasso.with(convertView.getContext())
+                    .load(e.getUrl_pp())
+                    .placeholder(R.drawable.def_image)
+                    .resize(50,50)
+                    .centerCrop()
+                    .into(mProfilePicture);
+        }
 
         //Content image
         if(e.getGambar() != "none"){
-            mImageContent.setImageUrl(e.getGambar(),mImageLoader);
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int height = displaymetrics.heightPixels;
+            int width = displaymetrics.widthPixels;
+
+            Picasso.with(convertView.getContext())
+                    .load(e.getGambar())
+                    .resize(width,height)
+                    .centerInside()
+                    .into(mImageContent);
         }
         return convertView;
     }

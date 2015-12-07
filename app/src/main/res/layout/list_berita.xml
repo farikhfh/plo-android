@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <com.android.volley.toolbox.NetworkImageView
+        <ImageView
             android:layout_width="@dimen/profile_picture_width"
             android:layout_height="@dimen/profile_picture_height"
             android:id="@+id/profilePictureBerita"
@@ -18,13 +18,12 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="4dp"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textNamaBerita"
-            android:text="Nama"
             android:textSize="@dimen/text_nama"
             android:layout_alignWithParentIfMissing="false"
             android:layout_alignTop="@+id/profilePictureBerita"
@@ -37,7 +36,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/textUsernameBerita"
-            android:text="(Username)"
             android:enabled="false"
             android:textSize="@dimen/text_username"
             android:layout_gravity="center_vertical"
@@ -49,7 +47,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Waktu"
             android:id="@+id/textWaktuBerita"
             android:enabled="false"
             android:textSize="@dimen/text_waktu"
@@ -65,12 +62,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Judul"
             android:id="@+id/textJudulBerita"
             android:textStyle="bold"
             android:layout_marginLeft="4dp" />
 
-        <com.android.volley.toolbox.NetworkImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageIsiBerita"
@@ -81,14 +77,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="isi singkat"
             android:id="@+id/textIsiSingkatBerita"
             android:layout_marginLeft="4dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Terakhir dikomentari oleh "
             android:textSize="@dimen/text_terakhir_komentar"
             android:gravity="left"
             android:textIsSelectable="false"

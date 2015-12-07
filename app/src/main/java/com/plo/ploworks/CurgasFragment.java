@@ -1,6 +1,7 @@
 package com.plo.ploworks;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.plo.ploworks.berita.Berita;
 import com.plo.ploworks.curgas.Curgas;
 import com.plo.ploworks.curgas.CurgasListAdapter;
 import com.plo.ploworks.network.Constants;
@@ -57,22 +60,21 @@ public class CurgasFragment extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_list,container,false);
         ListView listCurgas = (ListView) rootView.findViewById(R.id.list_view);
 
-            this.progressDialogStart();
-            //get initialize url
-            String URL = this.urlBuilder();
+        //get initialize url
+        String URL = this.urlBuilder();
 
-            //request for first fragment generated
-            RequestQueue timelineQueue = Volley.newRequestQueue(getActivity());
-            CreateRequest jsonTimeLine = new CreateRequest(Request.Method.GET, URL, onSuccessListener(),
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getActivity(), "Network Timeout", Toast.LENGTH_LONG).show();
-                        }
-                    });
+        //request for first fragment generated
+        RequestQueue timelineQueue = Volley.newRequestQueue(getActivity());
+        CreateRequest jsonTimeLine = new CreateRequest(Request.Method.GET, URL, onSuccessListener(),
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), "Network Timeout", Toast.LENGTH_LONG).show();
+                    }
+                });
 
-            //request add for first time
-            timelineQueue.add(jsonTimeLine);
+        //request add for first time
+        timelineQueue.add(jsonTimeLine);
         listCurgas.setOnScrollListener(new AbsListView.OnScrollListener() {
             public void onScrollStateChanged(AbsListView view, int scrollState) {
             }
@@ -80,10 +82,8 @@ public class CurgasFragment extends Fragment{
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0) {
                     if (flag_loading == false) {
-                        progressDialogStart();
                         flag_loading = true;
                         addItem();
-                        progress.dismiss();
                     }
                 }
             }
@@ -92,7 +92,18 @@ public class CurgasFragment extends Fragment{
         adapter = new CurgasListAdapter(getActivity(), curgasList);
         listCurgas.setAdapter(adapter);
 
-        progress.dismiss();
+        listCurgas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Curgas item = (Curgas) parent.getItemAtPosition(position);
+                Bundle b = new Bundle();
+                b.putString("ID_POST", item.getKode());
+                Intent intent = new Intent(getActivity(), DetailCurgasActivity.class);
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
+
         return rootView;
     }
 
@@ -148,10 +159,12 @@ public class CurgasFragment extends Fragment{
                             curgas.setKode(obj.getString("kode"));
                             curgas.setUrl_pp(obj.getString("url_pp"));
                             curgas.setNama(obj.getString("nama"));
+                            curgas.setUsername(obj.getString("username"));
                             curgas.setWaktu(obj.getString("waktu"));
                             curgas.setJudul(obj.getString("judul"));
                             curgas.setIsiSingkat(obj.getString("isi_singkat"));
                             curgas.setGambar(obj.getString("gambar"));
+                            curgas.setKomentarTerakhir(obj.getString("komentar_terakhir"));
                             curgas.setJumlahKomentar(obj.getString("jumlah_komentar"));
                             curgasList.add(curgas);
 
@@ -166,12 +179,5 @@ public class CurgasFragment extends Fragment{
                 }
             }
         };
-    }
-
-    private void progressDialogStart(){
-        progress = new ProgressDialog(getActivity());
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.show();
     }
 }

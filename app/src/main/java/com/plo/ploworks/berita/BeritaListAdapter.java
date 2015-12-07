@@ -3,16 +3,19 @@ package com.plo.ploworks.berita;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.plo.ploworks.R;
 import com.plo.ploworks.network.CreateImageRequest;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,9 +26,8 @@ public class BeritaListAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
     private List<Berita> beritaItem;
-    private NetworkImageView mProfilePicture;
-    private NetworkImageView mContentPicture;
-    private ImageLoader mImageLoader;
+    private ImageView mProfilePicture;
+    private ImageView mContentPicture;
 
     public BeritaListAdapter(Activity activity, List<Berita> beritaItem) {
         this.activity = activity;
@@ -63,19 +65,18 @@ public class BeritaListAdapter extends BaseAdapter {
         TextView textIsiSingkat = (TextView)convertView.findViewById(R.id.textIsiSingkatBerita);
         TextView textKomentarTerakhir = (TextView)convertView.findViewById(R.id.textTerakhirKomentarBerita);
 
-        mProfilePicture = (NetworkImageView)convertView.findViewById(R.id.profilePictureBerita);
-        mContentPicture = (NetworkImageView)convertView.findViewById(R.id.imageIsiBerita);
+        mProfilePicture = (ImageView)convertView.findViewById(R.id.profilePictureBerita);
+        mContentPicture = (ImageView)convertView.findViewById(R.id.imageIsiBerita);
 
         Berita b = beritaItem.get(position);
 
-        mImageLoader = CreateImageRequest.getInstance(this.activity).getImageLoader();
-        //profile picture
-        mProfilePicture.setDefaultImageResId(R.drawable.def_image);
-        mProfilePicture.setMaxHeight(100);
-        mProfilePicture.setMaxWidth(100);
-
         if(b.getUrlFotoUser() != "none"){
-            mProfilePicture.setImageUrl(b.getUrlFotoUser(), mImageLoader);
+            Picasso.with(convertView.getContext())
+                    .load(b.getUrlFotoUser())
+                    .placeholder(R.drawable.def_image)
+                    .resize(50,50)
+                    .centerCrop()
+                    .into(mProfilePicture);
         }
 
         //name
@@ -105,7 +106,16 @@ public class BeritaListAdapter extends BaseAdapter {
 
         //Content image
         if(b.getUrlGambar() != "none"){
-            mContentPicture.setImageUrl(b.getUrlGambar(),mImageLoader);
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int height = displaymetrics.heightPixels;
+            int width = displaymetrics.widthPixels;
+
+            Picasso.with(convertView.getContext())
+                    .load(b.getUrlGambar())
+                    .resize(width,height)
+                    .centerInside()
+                    .into(mContentPicture);
         }
         return convertView;
     }

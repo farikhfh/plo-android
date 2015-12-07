@@ -7,5 +7,11 @@
     <string name="title_activity_main">Main Menu</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_detail_berita">Detail Berita</string>
-    <string name="title_activity_berita_detail">BeritaDetailActivity</string>
+    <string name="title_activity_add_news">Tambah Post</string>
+
+    <string name="hint_komentar">Isi komentar anda disini</string>
+    <string name="add_news_judul">Isi judul anda disini</string>
+    <string name="add_news_isi_singkat">Paragraf pertama (singkat saja)</string>
+    <string name="add_news_isi_lengkap">Selebihnya</string>
+
 </resources>

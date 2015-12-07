@@ -19,52 +19,63 @@
             android:layout_alignParentStart="true"
             android:layout_marginLeft="4dp"
             android:layout_marginStart="14dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/def_image" />
+            android:scaleType="fitCenter" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textNamaKomentar"
-            android:text="Nama"
-            android:textSize="@dimen/text_nama"
-            android:layout_alignWithParentIfMissing="false"
-            android:layout_alignTop="@+id/profilePictureKomentar"
             android:layout_toRightOf="@+id/profilePictureKomentar"
             android:layout_toEndOf="@+id/profilePictureKomentar"
-            android:layout_marginLeft="2dp" />
+            android:layout_marginLeft="5dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/textUsernameKomentar"
-            android:text="(Username)"
-            android:enabled="false"
-            android:textSize="@dimen/text_username"
-            android:layout_gravity="center_vertical"
-            android:textStyle="italic"
-            android:layout_below="@+id/textNamaKomentar"
-            android:layout_alignLeft="@+id/textNamaKomentar"
-            android:layout_alignStart="@+id/textNamaKomentar" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textNamaKomentar"
+                android:text="Nama"
+                android:textSize="@dimen/text_nama"
+                android:layout_alignWithParentIfMissing="false"
+                android:layout_alignTop="@+id/profilePictureKomentar"
+                android:layout_toRightOf="@+id/profilePictureKomentar"
+                android:layout_toEndOf="@+id/profilePictureKomentar"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Waktu"
-            android:id="@+id/textWaktuKomentar"
-            android:enabled="false"
-            android:textSize="@dimen/text_waktu"
-            android:layout_below="@+id/textUsernameKomentar"
-            android:layout_alignLeft="@+id/textUsernameKomentar"
-            android:layout_alignStart="@+id/textUsernameKomentar" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/textUsernameKomentar"
+                android:text="(Username)"
+                android:enabled="false"
+                android:textSize="@dimen/text_username"
+                android:layout_gravity="center_vertical"
+                android:textStyle="italic"
+                android:layout_below="@+id/textNamaKomentar"
+                android:layout_alignLeft="@+id/textNamaKomentar"
+                android:layout_alignStart="@+id/textNamaKomentar"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Waktu"
+                android:id="@+id/textWaktuKomentar"
+                android:enabled="false"
+                android:textSize="@dimen/text_waktu"
+                android:layout_below="@+id/textUsernameKomentar"
+                android:layout_alignLeft="@+id/textUsernameKomentar"
+                android:layout_alignStart="@+id/textUsernameKomentar"
+                android:layout_weight="1" />
+        </LinearLayout>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.android.volley.toolbox.NetworkImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageIsiKomentar"
@@ -75,9 +86,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="isi singkat"
-            android:id="@+id/textKomentar" />
+            android:id="@+id/textKomentar"
+            android:layout_marginLeft="5dp" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listTanggapanLayout"></LinearLayout>
 
 
 </LinearLayout>

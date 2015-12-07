@@ -30,13 +30,29 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
-            android:name=".berita.DetailBeritaActivity"
+            android:name=".DetailBeritaActivity"
             android:label="@string/title_activity_detail_berita"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.plo.ploworks.MainActivity" />
+        </activity>
+        <activity
+            android:name=".KomentarBeritaActivity"
+            android:label="Komentar Berita">
+        </activity>
+        <activity
+            android:name=".NewsAddActivity"
+            android:label="@string/title_activity_add_news">
+        </activity>
+        <activity
+            android:name=".DetailCurgasActivity"
+            android:label="Detail Curgas">
+        </activity>
+        <activity
+            android:name=".KomentarCurgasActivity"
+            android:label="Komentar Curgas">
         </activity>
     </application>
 

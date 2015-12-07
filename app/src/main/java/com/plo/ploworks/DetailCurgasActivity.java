@@ -1,4 +1,4 @@
-package com.plo.ploworks.berita;
+package com.plo.ploworks;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +26,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.plo.ploworks.R;
-import com.plo.ploworks.komentar.KomentarBeritaActivity;
+import com.plo.ploworks.curgas.Curgas;
 import com.plo.ploworks.network.Constants;
 import com.plo.ploworks.network.CreateImageRequest;
 import com.plo.ploworks.network.CreateRequest;
@@ -40,38 +41,32 @@ import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DetailBeritaActivity extends AppCompatActivity {
+public class DetailCurgasActivity extends AppCompatActivity {
     private RequestQueue detailQueue;
-    private String detailURL , komentarURL,  auth, profilePictureUrl, contentPictureUrl;
-    private Berita berita;
+    private String detailURL , komentarURL,  auth;
+    private Curgas curgas;
 
     private TextView textNama,textUsername,textWaktu,textJudul,textIsiSingkat,textIsiLengkap, textUrl;
     private ImageView mProfilePicture, mContentPicture;
-    private ImageLoader mImageLoader;
     private Button buttonKomentar;
 
-    private Boolean HAS_COMMENT = false;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detail_berita);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.detail_curgas);
 
         //view initialization
-        textNama = (TextView) findViewById(R.id.textNamaDetailBerita);
-        textUsername = (TextView) findViewById(R.id.textUsernameDetailBerita);
-        textWaktu = (TextView) findViewById(R.id.textWaktuDetailBerita);
-        textJudul = (TextView) findViewById(R.id.textJudulDetailBerita);
-        textIsiSingkat = (TextView) findViewById(R.id.textIsiSingkatDetailBerita);
-        textIsiLengkap = (TextView) findViewById(R.id.textIsiLengkapDetailBerita);
+        textNama = (TextView) findViewById(R.id.textNamaDetailCurgas);
+        textUsername = (TextView) findViewById(R.id.textUsernameDetailCurgas);
+        textWaktu = (TextView) findViewById(R.id.textWaktuDetailCurgas);
+        textJudul = (TextView) findViewById(R.id.textJudulDetailCurgas);
+        textIsiSingkat = (TextView) findViewById(R.id.textIsiSingkatDetailCurgas);
+        textIsiLengkap = (TextView) findViewById(R.id.textIsiLengkapDetailCurgas);
         buttonKomentar = (Button) findViewById(R.id.buttonKomentar);
 
         //image content initialization
-        mProfilePicture = (ImageView) findViewById(R.id.profilePictureBerita);
-        mContentPicture = (ImageView) findViewById(R.id.imageIsiBerita);
+        mProfilePicture = (ImageView) findViewById(R.id.profilePictureImage);
+        mContentPicture = (ImageView) findViewById(R.id.contentImage);
 
         Intent intent = getIntent();
         final String ID_POST = intent.getStringExtra("ID_POST");
@@ -81,7 +76,7 @@ public class DetailBeritaActivity extends AppCompatActivity {
         Log.d("URL",detailURL);
         Log.d("URL",komentarURL);
 
-        berita = new Berita();
+        curgas = new Curgas();
 
         //request for first fragment generated
         detailQueue = Volley.newRequestQueue(this);
@@ -90,14 +85,14 @@ public class DetailBeritaActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray jarray = response.getJSONArray("detail");
-                        try {
-                            JSONObject obj = jarray.getJSONObject(0);
-                            layoutContentSet(obj);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "No Data Received", Toast.LENGTH_LONG).show();
+                    try {
+                        JSONObject obj = jarray.getJSONObject(0);
+                        layoutContentSet(obj);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         },
@@ -123,7 +118,7 @@ public class DetailBeritaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Bundle b = new Bundle();
                 b.putString("ID_POST", ID_POST);
-                Intent intent = new Intent(getApplicationContext(), KomentarBeritaActivity.class);
+                Intent intent = new Intent(DetailCurgasActivity.this, KomentarCurgasActivity.class);
                 intent.putExtras(b);
                 startActivity(intent);
             }
@@ -135,11 +130,11 @@ public class DetailBeritaActivity extends AppCompatActivity {
 
     private String detailUrl(String ID_POST) {
         //Build URL to request
-        String timelineURL = "news/detail.json";
+        String timelineURL = "curgas/detail.json";
         final RequestBuilder.UrlBuilder url = new RequestBuilder.UrlBuilder();
         url.setUrl(timelineURL);
         url.appendUrlQuery("apikey", Constants.API_KEY);
-        url.appendUrlQuery("kode_news", ID_POST);
+        url.appendUrlQuery("kode_curgas", ID_POST);
 
         String buildURL = url.build();
 
@@ -148,51 +143,68 @@ public class DetailBeritaActivity extends AppCompatActivity {
 
     private void layoutContentSet (JSONObject obj){
         try {
-            berita.setIdPost(obj.getString("no"));
-            berita.setKodeUser(obj.getString("kode"));
-            berita.setUserName(obj.getString("username"));
-            berita.setUrlFotoUser(obj.getString("url_pp"));
-            berita.setNama(obj.getString("nama"));
-            berita.setWaktu(obj.getString("waktu"));
-            berita.setJudul(obj.getString("judul"));
-            berita.setIsiSingkat(obj.getString("isi_singkat"));
-            berita.setUrlGambar(obj.getString("gambar"));
-            berita.setJumlahKomentar(obj.getString("jumlah_komentar"));
-            berita.setKomentarTerakhir(obj.getString("komentar_terakhir"));
+            curgas.setNo(obj.getString("no"));
+            curgas.setKode(obj.getString("kode"));
+            curgas.setUsername(obj.getString("username"));
+            curgas.setUrl_pp(obj.getString("url_pp"));
+            curgas.setNama(obj.getString("nama"));
+            curgas.setWaktu(obj.getString("waktu"));
+            curgas.setJudul(obj.getString("judul"));
+            curgas.setIsiSingkat(obj.getString("isi_singkat"));
+            curgas.setIsiLengkap(obj.getString("isi_lengkap"));
+            curgas.setGambar(obj.getString("gambar"));
+            curgas.setJumlahKomentar(obj.getString("jumlah_komentar"));
+            curgas.setKomentarTerakhir(obj.getString("komentar_terakhir"));
 
             //set view item
-            textNama.setText(berita.getNama());
-            textUsername.setText(berita.getUserName());
-            textWaktu.setText(berita.getWaktu());
-            textJudul.setText(berita.getJudul());
-            textIsiSingkat.setText(Html.fromHtml(berita.getIsiSingkat()));
+            textNama.setText(curgas.getNama());
+            textUsername.setText("("+curgas.getUsername()+")");
+            textWaktu.setText(curgas.getWaktu());
+            textJudul.setText(curgas.getJudul());
+            textIsiSingkat.setText(Html.fromHtml(curgas.getIsiSingkat()));
+            buttonKomentar.setText("Komentar "+"("+curgas.getJumlahKomentar()+")");
 
-            if(berita.getUrlFotoUser().equals("none")){
-            } else {
-                Picasso.with(getParent())
-                        .load(berita.getUrlFotoUser())
-                        .resize(60,60)
-                        .centerCrop()
-                        .into(mProfilePicture);
+            Picasso.with(getApplicationContext())
+                    .load(curgas.getUrl_pp())
+                    .resize(60,60)
+                    .centerCrop()
+                    .placeholder(getResources().getDrawable(R.drawable.def_image))
+                    .into(mProfilePicture);
+
+//            if(curgas.getUrlGambar().equals("none")){
+//            } else {
+//
+//            }
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int height = displaymetrics.heightPixels;
+            int width = displaymetrics.widthPixels;
+
+            Picasso.with(getApplicationContext())
+                    .load(curgas.getGambar())
+                    .resize(width,height)
+                    .centerInside()
+                    .into(mContentPicture);
+
+            if (curgas.getIsiLengkap().equals("")){
+                textIsiLengkap.setVisibility(View.GONE);
+            }
+            else {
+                textIsiLengkap.setText(Html.fromHtml(curgas.getIsiLengkap()));
             }
 
-            if (berita.getIsiLengkap().equals("none")){
-            } else {
-                textIsiLengkap.setText(berita.getIsiLengkap());
-            }
-
-            buttonKomentar.setText("Komentar ("+berita.getJumlahKomentar()+")");
+            buttonKomentar.setText("Komentar ("+curgas.getJumlahKomentar()+")");
 
         } catch (JSONException e){
 
         }
     }
     private String komentarURL(String ID_POST){
-        String timelineURL = "news/komentar.json";
+        String timelineURL = "curgas/komentar.json";
         final RequestBuilder.UrlBuilder url = new RequestBuilder.UrlBuilder();
         url.setUrl(timelineURL);
         url.appendUrlQuery("apikey", Constants.API_KEY);
-        url.appendUrlQuery("kode_news", ID_POST);
+        url.appendUrlQuery("kode_curgas", ID_POST);
 
         String buildURL = url.build();
 

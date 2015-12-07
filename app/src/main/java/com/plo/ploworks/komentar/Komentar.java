@@ -1,11 +1,24 @@
 package com.plo.ploworks.komentar;
 
+import org.json.JSONArray;
+
 /**
  * Created by Farikh Fadlul Huda on 11/4/2015.
  */
 public class Komentar {
     Integer no;
-    String username, url_pp, nama, isi, waktu, url_gambar, tanggapan;
+    String username, url_pp, nama, isi, waktu, url_gambar;
+    JSONArray tanggapan;
+
+    Boolean hasTanggapan;
+
+    public Boolean getHasTanggapan() {
+        return hasTanggapan;
+    }
+
+    public void setHasTanggapan(Boolean hasTanggapan) {
+        this.hasTanggapan = hasTanggapan;
+    }
 
     public Integer getNo() {
         return no;
@@ -63,11 +76,11 @@ public class Komentar {
         this.url_gambar = url_gambar;
     }
 
-    public String getTanggapan() {
+    public JSONArray getTanggapan() {
         return tanggapan;
     }
 
-    public void setTanggapan(String tanggapan) {
+    public void setTanggapan(JSONArray tanggapan) {
         this.tanggapan = tanggapan;
     }
 }

@@ -4,7 +4,27 @@ package com.plo.ploworks.curgas;
  * Created by Farikh Fadlul Huda on 10/9/2015.
  */
 public class Curgas {
-    String no, kode, username, url_pp, nama, waktu, judul, isiSingkat, gambar, jumlahKomentar, komentarTerakhir, notif;
+    String no;
+    String kode;
+    String username;
+    String url_pp;
+    String nama;
+    String waktu;
+    String judul;
+    String isiSingkat;
+    String gambar;
+    String jumlahKomentar;
+    String komentarTerakhir;
+    String isiLengkap;
+    String notif;
+
+    public String getIsiLengkap() {
+        return isiLengkap;
+    }
+
+    public void setIsiLengkap(String isiLengkap) {
+        this.isiLengkap = isiLengkap;
+    }
 
     public String getNo() {
         return no;

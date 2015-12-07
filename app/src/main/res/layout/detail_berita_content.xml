@@ -6,7 +6,7 @@
     android:layout_height="fill_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/detail_berita"
-    tools:context="com.plo.ploworks.berita.DetailBeritaActivity">
+    tools:context="com.plo.ploworks.DetailBeritaActivity">
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -27,44 +27,44 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:src="@drawable/def_image" />
+            android:layout_marginLeft="4dp" />
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/frameProfilePictureLayout"
-        android:layout_toRightOf="@+id/frameProfilePictureLayout"
-        android:layout_alignBottom="@+id/frameProfilePictureLayout"
-        android:layout_marginLeft="5dp">
+   <LinearLayout
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:layout_toRightOf="@+id/frameProfilePictureLayout"
+       android:layout_toEndOf="@+id/frameProfilePictureLayout"
+       android:layout_above="@+id/linearLayout"
+       android:layout_alignTop="@+id/frameProfilePictureLayout"
+       android:paddingLeft="4dp">
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textAppearance="?android:attr/textAppearanceLarge"
+           android:id="@+id/textNamaDetailBerita"
+           android:layout_alignParentTop="true"
+           android:layout_toRightOf="@+id/profilePictureImage"
+           android:layout_toEndOf="@+id/profilePictureImage"
+           android:layout_weight="1" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Farikh Fadlul Huda"
-            android:id="@+id/textNamaDetailBerita"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/profilePictureImage"
-            android:layout_toEndOf="@+id/profilePictureImage" />
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textAppearance="?android:attr/textAppearanceMedium"
+           android:id="@+id/textUsernameDetailBerita"
+           android:layout_gravity="left|center_vertical"
+           android:layout_weight="1"
+           android:textStyle="italic" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="farikh.fadlul.h"
-            android:id="@+id/textUsernameDetailBerita"
-            android:layout_gravity="left|center_vertical" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="19 Oktober 2015"
-            android:id="@+id/textWaktuDetailBerita"
-            android:layout_gravity="left|bottom" />
-    </FrameLayout>
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textAppearance="?android:attr/textAppearanceMedium"
+           android:id="@+id/textWaktuDetailBerita"
+           android:layout_weight="1" />
+   </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,15 +72,17 @@
         android:layout_below="@+id/frameProfilePictureLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/linearLayout"
+        android:clipToPadding="false">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Judul"
             android:id="@+id/textJudulDetailBerita"
-            />
+            android:textStyle="bold"
+            android:layout_marginLeft="4dp" />
 
         <com.android.volley.toolbox.NetworkImageView
             android:layout_width="wrap_content"
@@ -92,17 +94,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Isi Singkat"
             android:id="@+id/textIsiSingkatDetailBerita"
-            />
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="4dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Isi Lengkap"
             android:id="@+id/textIsiLengkapDetailBerita"
-            />
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="4dp" />
 
         <Button
             android:layout_width="wrap_content"

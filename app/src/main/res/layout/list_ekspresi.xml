@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <com.android.volley.toolbox.NetworkImageView
+        <ImageView
             android:layout_width="@dimen/profile_picture_width"
             android:layout_height="@dimen/profile_picture_height"
             android:id="@+id/profilePictureEkspresi"
@@ -69,7 +69,7 @@
             android:text="isi singkat"
             android:id="@+id/textEkspresi" />
 
-        <com.android.volley.toolbox.NetworkImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageIsiEkspresi"

@@ -21,7 +21,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.plo.ploworks.berita.Berita;
 import com.plo.ploworks.berita.BeritaListAdapter;
-import com.plo.ploworks.berita.DetailBeritaActivity;
 import com.plo.ploworks.network.Constants;
 import com.plo.ploworks.network.CreateRequest;
 import com.plo.ploworks.network.RequestBuilder;
@@ -109,6 +108,14 @@ public class BeritaFragment extends Fragment {
         adapter = new BeritaListAdapter(getActivity(), beritaList);
         listBerita.setAdapter(adapter);
         progress.dismiss();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),NewsAddActivity.class);
+                startActivityForResult(intent,getTargetRequestCode());
+            }
+        });
         return rootView;
     }
 
