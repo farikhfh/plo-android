@@ -70,14 +70,12 @@ public class BeritaListAdapter extends BaseAdapter {
 
         Berita b = beritaItem.get(position);
 
-        if(b.getUrlFotoUser() != "none"){
-            Picasso.with(convertView.getContext())
-                    .load(b.getUrlFotoUser())
-                    .placeholder(R.drawable.def_image)
-                    .resize(50,50)
-                    .centerCrop()
-                    .into(mProfilePicture);
-        }
+        Picasso.with(convertView.getContext())
+                .load(b.getUrlFotoUser())
+                .placeholder(R.drawable.def_image)
+                .resize(50,50)
+                .centerCrop()
+                .into(mProfilePicture);
 
         //name
         textNama.setText(b.getNama());

@@ -81,15 +81,12 @@ public class EkspresiListAdapter extends BaseAdapter {
         textKomentator.setText(e.getKomentator());
         textKomentar.setText(e.getKomentar());
 
-        if (e.getUrl_pp() == "none"){
-        } else {
-            Picasso.with(convertView.getContext())
-                    .load(e.getUrl_pp())
-                    .placeholder(R.drawable.def_image)
-                    .resize(50,50)
-                    .centerCrop()
-                    .into(mProfilePicture);
-        }
+        Picasso.with(convertView.getContext())
+                .load(e.getUrl_pp())
+                .placeholder(R.drawable.def_image)
+                .resize(50,50)
+                .centerCrop()
+                .into(mProfilePicture);
 
         //Content image
         if(e.getGambar() != "none"){

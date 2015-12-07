@@ -70,14 +70,12 @@ public class CurgasListAdapter extends BaseAdapter {
 
         Curgas b = curgasItem.get(position);
 
-        if(b.getUrl_pp() != "none"){
-            Picasso.with(convertView.getContext())
-                    .load(b.getUrl_pp())
-                    .placeholder(R.drawable.def_image)
-                    .resize(50,50)
-                    .centerCrop()
-                    .into(mProfilePicture);
-        }
+        Picasso.with(convertView.getContext())
+                .load(b.getUrl_pp())
+                .placeholder(R.drawable.def_image)
+                .resize(50,50)
+                .centerCrop()
+                .into(mProfilePicture);
 
         //name
         textNama.setText(b.getNama());
