@@ -96,6 +96,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listTanggapanLayout"></LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tanggapanLayout"
+        android:tag="layout_tanggapan"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextTanggapan"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:inputType="textMultiLine|textLongMessage|textCapSentences"
+            android:scrollHorizontally="false"
+            android:hint="@string/hint_komentar"
+            android:singleLine="false"
+            android:layout_marginTop="5dp"
+            android:textSize="14sp"
+            android:layout_weight="200" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonTanggapi"
+            android:text="Tanggapi"
+            android:textSize="9sp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="right"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 
 </LinearLayout>

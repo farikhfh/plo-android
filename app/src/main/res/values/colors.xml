@@ -1,5 +1,7 @@
 <resources>
-
     <color name="black_overlay">#66000000</color>
 
+    <color name="list_drawer_background">#808080</color>
+    <color name="list_drawer_item_normal">#808080</color>
+    <color name="list_drawer_item_selected">#00aaff</color>
 </resources>

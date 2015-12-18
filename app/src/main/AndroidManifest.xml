@@ -54,6 +54,9 @@
             android:name=".KomentarCurgasActivity"
             android:label="Komentar Curgas">
         </activity>
+        <activity android:name=".DetailEkspresiActivity"
+            android:label="Komentar Ekspresi">
+        </activity>
     </application>
 
 </manifest>

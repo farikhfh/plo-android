@@ -3,6 +3,7 @@ package com.plo.ploworks;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,6 +60,7 @@ public class CurgasFragment extends Fragment{
         //set root view with fragment
         View rootView = inflater.inflate(R.layout.fragment_list,container,false);
         ListView listCurgas = (ListView) rootView.findViewById(R.id.list_view);
+        FloatingActionButton postCurgasButton = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
         //get initialize url
         String URL = this.urlBuilder();
@@ -101,6 +103,17 @@ public class CurgasFragment extends Fragment{
                 Intent intent = new Intent(getActivity(), DetailCurgasActivity.class);
                 intent.putExtras(b);
                 startActivity(intent);
+            }
+        });
+
+        postCurgasButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putInt("CODE",2);
+                Intent intent = new Intent(getActivity(),NewsAddActivity.class);
+                intent.putExtras(b);
+                startActivityForResult(intent,getTargetRequestCode());
             }
         });
 

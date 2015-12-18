@@ -112,7 +112,10 @@ public class BeritaFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putInt("CODE",2);
                 Intent intent = new Intent(getActivity(),NewsAddActivity.class);
+                intent.putExtras(b);
                 startActivityForResult(intent,getTargetRequestCode());
             }
         });

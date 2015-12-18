@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:tag="ekspresi_layout">
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/ekspresiLayout" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ekspresiLayout"
+        android:tag="layout_tanggapan"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginRight="4dp">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextEkspresi"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:inputType="textMultiLine|textLongMessage|textCapSentences"
+            android:scrollHorizontally="false"
+            android:hint="Tulis ekpsresi disini..."
+            android:singleLine="false"
+            android:layout_marginTop="5dp"
+            android:textSize="14sp"
+            android:layout_weight="200" />
+
+        <ImageButton
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/buttonEkspresi"
+            android:src="@drawable/ic_send_black_36dp"
+            android:backgroundTint="@android:color/background_light"
+            android:tint="#4477aa"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:layout_margin="4dp" />
+    </LinearLayout>
+
+</RelativeLayout>

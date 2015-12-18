@@ -2,6 +2,7 @@ package com.plo.ploworks.ekspresi;
 import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class EkspresiListAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
     private List<Ekspresi> ekspresiItem;
+    private String isEmpty = "none";
 
     public EkspresiListAdapter(Activity activity, List<Ekspresi> ekspresiItem) {
         this.activity = activity;
@@ -78,8 +80,14 @@ public class EkspresiListAdapter extends BaseAdapter {
         textWaktu.setText(date.toString());
 
         textEkspresi.setText(e.getEkspresi());
-        textKomentator.setText(e.getKomentator());
+
         textKomentar.setText(e.getKomentar());
+        textKomentator.setText(e.getKomentator());
+
+        if (e.getKomentar().equals(isEmpty)) {
+            textKomentar.setVisibility(View.GONE);
+            textKomentator.setVisibility(View.GONE);
+        }
 
         Picasso.with(convertView.getContext())
                 .load(e.getUrl_pp())

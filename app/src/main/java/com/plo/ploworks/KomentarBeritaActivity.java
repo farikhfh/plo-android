@@ -13,6 +13,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -53,7 +54,7 @@ public class KomentarBeritaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_komentar_berita);
 
         //view initialization
-        ListView listKomentar = (ListView) findViewById(R.id.list_view_komentar);
+        final ListView listKomentar = (ListView) findViewById(R.id.list_view_komentar);
         komentarButton = (Button) findViewById(R.id.sendButtonKomentar);
         komentarText = (EditText) findViewById(R.id.editTextKomentar);
         komentarText.setBackgroundResource(R.drawable.komentar_edittext_background);
@@ -136,7 +137,6 @@ public class KomentarBeritaActivity extends AppCompatActivity {
         listKomentar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
             }
         });
 

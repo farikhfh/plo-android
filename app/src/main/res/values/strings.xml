@@ -10,8 +10,24 @@
     <string name="title_activity_add_news">Tambah Post</string>
 
     <string name="hint_komentar">Isi komentar anda disini</string>
+    <string name="hint_tanggapan">Isi tanggapan anda disini</string>
+
     <string name="add_news_judul">Isi judul anda disini</string>
     <string name="add_news_isi_singkat">Paragraf pertama (singkat saja)</string>
     <string name="add_news_isi_lengkap">Selebihnya</string>
+
+    <string-array name="nav_drawer_items">
+        <item>User</item>
+        <item>Pesan</item>
+        <item>Group</item>
+        <item>Logout</item>
+    </string-array>
+
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_person_white_36dp</item>
+        <item>@drawable/ic_email_white_36dp</item>
+        <item>@drawable/ic_group_white_36dp</item>
+        <item>@android:drawable/ic_lock_power_off</item>
+    </array>
 
 </resources>

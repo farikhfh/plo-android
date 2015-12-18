@@ -38,11 +38,12 @@ public class KomentarBeritaListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<Komentar> komentarItem;
 
+    private LinearLayout tanggapanLayout;
+
     public KomentarBeritaListAdapter(Activity activity, List<Komentar> komentarItem) {
         this.activity = activity;
         this.komentarItem = komentarItem;
     }
-
     @Override
     public int getCount() {
         return komentarItem.size();

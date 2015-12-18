@@ -14,6 +14,7 @@ public class Ekspresi {
     String jumlah;
     String komentar;
     String komentator;
+    Boolean HasKomentar;
 
     public String getNo() {
         return no;

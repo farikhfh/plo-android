@@ -1,6 +1,7 @@
 package com.plo.ploworks;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -34,8 +35,6 @@ public class NewsAddActivity extends AppCompatActivity {
     protected String URL;
     protected String AUTH;
 
-    private String judulText, isiSingkatText, isiLengkapText;
-
     protected RequestQueue addNewsQueue;
     protected CreateRequest addNewsRequest;
 
@@ -51,16 +50,16 @@ public class NewsAddActivity extends AppCompatActivity {
         isiSingkat = (EditText) findViewById(R.id.input_isi_singkat);
         isiLengkap = (EditText) findViewById(R.id.input_iai_lengkap);
 
+        //get code, 1 for news, 2 for curgas
+        Intent intent = getIntent();
+        int CODE = intent.getIntExtra("CODE", 1);
+
         //url initialization
-        URL = this.urlBuilder();
+        URL = this.urlBuilder(CODE);
 
         //read from sharedPreferences
         SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.USER_PREFERENCES_NAME, Context.MODE_PRIVATE);
         AUTH = prefs.getString("authorization", "");
-
-        judulText = judul.getText().toString();
-        isiSingkatText = isiSingkat.getText().toString();
-        isiLengkapText = isiLengkap.getText().toString();
 
         addNewsQueue = Volley.newRequestQueue(getApplicationContext());
         addNewsRequest = new CreateRequest(Request.Method.POST, URL,new Response.Listener<JSONObject>() {
@@ -116,9 +115,14 @@ public class NewsAddActivity extends AppCompatActivity {
         });
     }
 
-    protected String urlBuilder() {
+    protected String urlBuilder(int CODE) {
         //Build URL to request
-        String urlPost = "news/tambah/"+Constants.API_KEY+"/post.json";
+        String urlPost = "";
+        if (CODE == 1){
+            urlPost = "news/tambah/"+Constants.API_KEY+"/post.json";
+        } else if (CODE == 2){
+            urlPost = "curgas/tambah/"+Constants.API_KEY+"/post.json";
+        }
         final RequestBuilder.UrlBuilder url = new RequestBuilder.UrlBuilder();
         url.setUrl(urlPost);
         String buildURL = url.build();
