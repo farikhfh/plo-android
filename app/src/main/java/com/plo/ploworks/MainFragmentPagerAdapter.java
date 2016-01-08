@@ -5,12 +5,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.util.List;
+
 /**
  * Created by Farikh Fadlul Huda on 10/9/2015.
  */
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 3;
     private String tabTitles[] = new String[] { "Berita", "Curgas", "Ekspresi" };
+    private FragmentManager mFragmentManager;
     private Context context;
     private Fragment fragment;
 
@@ -37,7 +40,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
                 fragment = new EkspresiFragment();
                 break;
             default:
-                fragment = new Fragment();
+                fragment = new BeritaFragment();
         }
         return fragment;
     }

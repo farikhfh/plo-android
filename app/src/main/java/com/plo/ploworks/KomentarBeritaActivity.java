@@ -200,4 +200,6 @@ public class KomentarBeritaActivity extends AppCompatActivity {
             }
         };
     }
+
+    //TODO Create tanggapan in komentar :: KomentarBerita
 }

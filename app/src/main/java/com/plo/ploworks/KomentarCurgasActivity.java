@@ -200,4 +200,6 @@ public class KomentarCurgasActivity extends AppCompatActivity {
             }
         };
     }
+
+    //TODO Create tanggapan in komentar :: KomentarBerita
 }

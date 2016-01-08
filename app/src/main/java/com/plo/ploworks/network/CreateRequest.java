@@ -37,7 +37,6 @@ public class CreateRequest extends Request<JSONObject> {
 
     @Override
     protected void deliverResponse(JSONObject response) {
-        // TODO Auto-generated method stub
         listener.onResponse(response);
     }
 }
