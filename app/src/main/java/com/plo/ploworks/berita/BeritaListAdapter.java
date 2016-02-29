@@ -83,6 +83,7 @@ public class BeritaListAdapter extends BaseAdapter {
         //username
         textUsername.setText("(" + b.getUserName() + ")");
 
+        // TODO: 1/9/2016 Fixing date format
         //waktu
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
         Date date = new Date();

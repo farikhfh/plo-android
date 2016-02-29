@@ -19,7 +19,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.plo.ploworks.berita.Berita;
 import com.plo.ploworks.curgas.Curgas;
 import com.plo.ploworks.curgas.CurgasListAdapter;
 import com.plo.ploworks.network.Constants;
@@ -58,7 +57,7 @@ public class CurgasFragment extends Fragment{
                              Bundle savedInstanceState) {
 
         //set root view with fragment
-        View rootView = inflater.inflate(R.layout.fragment_list,container,false);
+        View rootView = inflater.inflate(R.layout.fragment_berita,container,false);
         ListView listCurgas = (ListView) rootView.findViewById(R.id.list_view);
         FloatingActionButton postCurgasButton = (FloatingActionButton) rootView.findViewById(R.id.fab);
 

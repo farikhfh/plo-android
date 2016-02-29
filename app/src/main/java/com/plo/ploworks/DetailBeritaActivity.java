@@ -189,10 +189,6 @@ public class DetailBeritaActivity extends AppCompatActivity {
                     .placeholder(getResources().getDrawable(R.drawable.def_image))
                     .into(mProfilePicture);
 
-//            if(berita.getUrlGambar().equals("none")){
-//            } else {
-//
-//            }
             DisplayMetrics displaymetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
             int height = displaymetrics.heightPixels;

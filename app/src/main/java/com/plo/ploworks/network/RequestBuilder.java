@@ -151,54 +151,6 @@ public class RequestBuilder {
             Log.d(getClass().getSimpleName(), "url = " + url);
             return url;
         }
-
-        /**
-         * This builder for building POST data that will be sent to server
-         */
-        public static class PostBuilder<T>
-        {
-
-            private String json;
-            private final Gson gson;
-
-            public PostBuilder()
-            {
-                gson = new GsonBuilder()
-                        .setFieldNamingPolicy(
-                                FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                        .registerTypeAdapter(Date.class, new DateTypeAdapter())
-                        .create();
-            }
-
-            /**
-             * to set POST params. Don't call this on non POST method. Check out for
-             * Log if something is wrong. could be caused by Converting error.
-             *
-             * @param entity Object entity to be sent as POST params
-             * @return
-             */
-            public PostBuilder<T> setParams(T entity)
-            {
-                json = gson.toJson(entity);
-                Log.d(PostBuilder.class.getSimpleName(), "params = " + json);
-                return this;
-            }
-
-            public JSONObject build()
-            {
-                try
-                {
-                    return new JSONObject(json);
-                } catch (JSONException e)
-                {
-                    e.printStackTrace();
-                    Log.e(PostBuilder.class.getSimpleName(),
-                            "ERROR CONVERTING TO JSON!!!! Reason: "
-                                    + e.getMessage());
-                    return null;
-                }
-            }
-        }
       }
 }
 

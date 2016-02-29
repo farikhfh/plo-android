@@ -14,7 +14,7 @@ import android.view.ViewGroup;
  */
 public class HomeFragmentActivity extends Fragment {
 
-    public HomeFragmentActivity(){
+    public HomeFragmentActivity() {
         //empty constructor
     }
 
@@ -27,7 +27,7 @@ public class HomeFragmentActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.home_fragment, container, false);
         ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
-        viewPager.setAdapter(new MainFragmentPagerAdapter(getFragmentManager(),getActivity()));
+        viewPager.setAdapter(new MainFragmentPagerAdapter(getFragmentManager(), getActivity()));
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.sliding_tabs);

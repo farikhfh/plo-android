@@ -57,7 +57,7 @@ public class BeritaFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         //set root view with fragment
-        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_berita, container, false);
         ListView listBerita = (ListView) rootView.findViewById(R.id.list_view);
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
@@ -104,6 +104,7 @@ public class BeritaFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
         //load the list adapter
         adapter = new BeritaListAdapter(getActivity(), beritaList);
         listBerita.setAdapter(adapter);
@@ -113,7 +114,7 @@ public class BeritaFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putInt("CODE",2);
+                b.putInt("CODE",1);
                 Intent intent = new Intent(getActivity(),NewsAddActivity.class);
                 intent.putExtras(b);
                 startActivityForResult(intent,getTargetRequestCode());
@@ -153,7 +154,7 @@ public class BeritaFragment extends Fragment {
         timelineQueue.add(jsonTimeLine);
     }
 
-    //Volley berita on success listener refresh
+    //Volley berita on success listener
     private Response.Listener<JSONObject> onSuccessListener() {
         return new Response.Listener<JSONObject>() {
             @Override

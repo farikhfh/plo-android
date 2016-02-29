@@ -22,7 +22,7 @@ public class SplashActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                //if sharePreferences that contain login information is true the lead to mainActivity
+                //if sharePreferences that contain login information is true then lead to mainActivity
                 //else go to loginActivity
                 SharedPreferences pref = getSharedPreferences(Constants.USER_PREFERENCES_NAME,MODE_PRIVATE);
                 username = pref.getString("username",null);

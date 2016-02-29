@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">plo</string>
 
-    <string name="SPLASH_SCREEN_TEXT">PLO Kontak UGM</string>
+    <string name="SPLASH_SCREEN_TEXT">KONTAK</string>
     <string name="action_settings">Settings</string>
 
     <string name="title_activity_main">Kontak UGM</string>
@@ -21,16 +21,12 @@
     <string-array name="nav_drawer_items">
         <item>Home</item>
         <item>User</item>
-        <item>Pesan</item>
-        <item>Group</item>
         <item>Logout</item>
     </string-array>
 
     <array name="nav_drawer_icons">
         <item>@drawable/ic_home_white</item>
         <item>@drawable/ic_person_white</item>
-        <item>@drawable/ic_email_white</item>
-        <item>@drawable/ic_group_white</item>
         <item>@android:drawable/ic_lock_power_off</item>
     </array>
 
