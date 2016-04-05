@@ -3,15 +3,6 @@ package com.plo.ploworks.network;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.internal.bind.DateTypeAdapter;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Date;
 import java.util.HashMap;
 
 /**

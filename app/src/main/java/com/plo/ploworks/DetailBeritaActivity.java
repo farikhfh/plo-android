@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -25,11 +23,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
-import com.plo.ploworks.R;
 import com.plo.ploworks.berita.Berita;
-import com.plo.ploworks.KomentarBeritaActivity;
 import com.plo.ploworks.network.Constants;
-import com.plo.ploworks.network.CreateImageRequest;
 import com.plo.ploworks.network.CreateRequest;
 import com.plo.ploworks.network.RequestBuilder;
 import com.squareup.picasso.Picasso;
@@ -37,7 +32,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +41,7 @@ public class DetailBeritaActivity extends AppCompatActivity {
     private String detailURL , komentarURL,  auth;
     private Berita berita;
 
-    private TextView textNama,textUsername,textWaktu,textJudul,textIsiSingkat,textIsiLengkap, textUrl;
+    private TextView textNama,textUsername,textWaktu,textJudul,textIsiSingkat,textIsiLengkap;
     private ImageView mProfilePicture, mContentPicture;
     private Button buttonKomentar;
 
