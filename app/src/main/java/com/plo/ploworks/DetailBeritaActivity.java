@@ -1,5 +1,6 @@
 package com.plo.ploworks;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,7 +37,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DetailBeritaActivity extends AppCompatActivity {
+public class DetailBeritaActivity extends Activity {
     private RequestQueue detailQueue;
     private String detailURL , komentarURL,  auth;
     private Berita berita;
@@ -65,7 +66,6 @@ public class DetailBeritaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_berita);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         //view initialization
         textNama = (TextView) findViewById(R.id.textNamaDetailBerita);

@@ -1,5 +1,6 @@
 package com.plo.ploworks;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,7 +42,7 @@ import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DetailCurgasActivity extends AppCompatActivity {
+public class DetailCurgasActivity extends Activity {
     private RequestQueue detailQueue;
     private String detailURL , komentarURL,  auth;
     private Curgas curgas;
